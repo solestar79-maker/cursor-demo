@@ -1,5 +1,13 @@
-// WHATWG HTML email 검증 정규식 (RFC 5322 atext + RFC 1034 도메인 라벨)
-// https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)
+// WHATWG HTML 표준 권장 이메일 검증 정규식
+// 출처: https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)
+//
+// ABNF (RFC 1123 확장 포함):
+//   email = 1*( atext / "." ) "@" label *( "." label )
+//   atext = RFC 5322 §3.2.3 — https://www.rfc-editor.org/rfc/rfc5322#section-3.2.3
+//   label = RFC 1034 §3.5 — https://www.rfc-editor.org/rfc/rfc1034#section-3.5
+//
+// RFC 5322 전체 문법은 주석·따옴표 문자열 등으로 실용성이 떨어져
+// WHATWG가 "willful violation"으로 위 ABNF를 채택했다.
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 /**
@@ -16,8 +24,10 @@ export function extractEmails(users) {
 
 /**
  * 이메일 주소 형식이 유효한지 검사한다.
+ * WHATWG HTML 표준 §4.10.5.1.5 정규식을 사용한다 (RFC 5322 atext + RFC 1034 도메인).
  * @param {unknown} email - 검사할 값
  * @returns {boolean} 유효하면 true
+ * @see https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)
  */
 export function isValidEmail(email) {
     if (typeof email !== 'string') return false;

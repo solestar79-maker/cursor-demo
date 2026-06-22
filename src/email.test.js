@@ -26,6 +26,11 @@ describe('isValidEmail', () => {
         assert.equal(isValidEmail('user.name@sub.example.co.uk'), true);
     });
 
+    it('returns true for RFC 5322 atext special characters in local part', () => {
+        assert.equal(isValidEmail("!#$%&'*+/=?^_`{|}~-@example.com"), true);
+        assert.equal(isValidEmail('user!name@example.com'), true);
+    });
+
     it('returns false for invalid values', () => {
         assert.equal(isValidEmail('not-an-email'), false);
         assert.equal(isValidEmail(''), false);
