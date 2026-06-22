@@ -1,0 +1,60 @@
+---
+description: 프로젝트 공통 코딩 규칙
+alwaysApply: true
+---
+
+# 프로젝트 공통 코딩 규칙
+
+- 모든 주석과 커밋 메시지는 **한국어**로 작성한다.
+- JavaScript는 **ES Modules**(`import` / `export`) 문법만 사용한다.
+- 함수에는 항상 **JSDoc** 주석을 단다.
+- 외부 라이브러리 추가 시 먼저 이유를 설명한 뒤 **동의를 구한다**.
+
+## 모듈
+
+```javascript
+// ✅ GOOD
+import { getValidEmails } from './email.js';
+
+export { getValidEmails };
+
+// ❌ BAD
+const { getValidEmails } = require('./email');
+module.exports = { getValidEmails };
+```
+
+## JSDoc
+
+```javascript
+/**
+ * 사용자 배열에서 유효한 이메일 주소만 추출한다.
+ * @param {Array<{ email: string }>} users - 사용자 객체 배열
+ * @returns {string[]} 유효한 이메일 주소 배열
+ */
+export function getValidEmails(users) {
+    return extractEmails(users).filter(isValidEmail);
+}
+```
+
+## 주석
+
+- 코드 설명, 비즈니스 로직, 외부 표준 참조 주석은 한국어로 작성한다.
+- 자명한 코드에 불필요한 주석은 달지 않는다.
+
+```javascript
+// WHATWG HTML email 검증 정규식 (RFC 5322 atext + RFC 1034 도메인 라벨)
+// https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)
+const EMAIL_REGEX = /^...$/;
+```
+
+## 의존성
+
+- `npm install`로 패키지를 추가하기 전, 왜 필요한지 설명하고 사용자 동의를 받는다.
+- Node.js 내장 모듈(`node:test`, `node:assert` 등)은 별도 동의 없이 사용할 수 있다.
+
+## 기타 스타일
+
+- **camelCase** 함수·변수, **SCREAMING_SNAKE_CASE** 모듈 상수
+- 4칸 들여쓰기, 작은따옴표, 세미콜론
+- guard clause로 잘못된 입력을 먼저 처리한다
+- 변경은 최소 범위로, 기존 패턴과 일치시킨다
